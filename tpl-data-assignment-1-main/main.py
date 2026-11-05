@@ -6,9 +6,14 @@ Part 3: Apply data protection (masking and anonymization)
 Part 4: Data analysis with Pandas
 """
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from configuration import DATABASE_URL
 from api.fetch_users import fetch_and_store_users
 from data_protection.masking import update_users_with_masked_phones
 from data_protection.anonymization import update_users_with_anonymized_names
+from data_analysis.analysis import analyze_users_data
 
 
 def main():
@@ -32,17 +37,22 @@ def main():
     print("\n[Part 3] Applying data protection")
     print("-" * 80)
     
-    print("\n  3.1 Masking phone numbers...")
+    print("\n  3.1 Masking phone numbers")
     update_users_with_masked_phones()
     
-    print("\n  3.2 Anonymizing names...")
+    print("\n  3.2 Anonymizing names")
     update_users_with_anonymized_names()
     
     # Part 4: Data Analysis
     print("\n[Part 4] Data analysis with Pandas")
     print("-" * 80)
     print("Data analysis results:")
-    print("  - Shape, first/last records printed")
+    
+    engine = create_engine(DATABASE_URL)
+    Session = sessionmaker(bind=engine)
+    
+    with Session() as session:
+        analyze_users_data(session)
     
     print("\n" + "=" * 80)
     print("PIPELINE COMPLETED SUCCESSFULLY!")
