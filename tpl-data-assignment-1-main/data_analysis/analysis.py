@@ -31,12 +31,10 @@ def analyze_users_data(session: Session) -> None:
     
     
     print("First Two Records:")
-    print("-" * 100)
     print(df.head(2).to_string())
     print()
     
     
     print("Last Two Records:")
-    print("-" * 100)
     print(df.tail(2).to_string())
     print()
